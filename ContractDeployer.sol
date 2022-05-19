@@ -3,7 +3,7 @@
 pragma solidity ^0.8.0;
 
 import "./DeployedContract.sol";
-import "@seydem-dev/used_chainlink/AggregatorV3Interface.sol";
+import "./AggregatorV3Interface.sol";
 
 contract ContractDeployer {
 
@@ -22,7 +22,7 @@ contract ContractDeployer {
     }
 
     /**
-     * Mandatory for deployContract()
+     * Required for deployContract()
      */
     function getEthPrice() public view returns (uint256) { 
         AggregatorV3Interface priceFeed = AggregatorV3Interface(0x8A753747A1Fa494EC906cE90E9f37563A8AF630e);
@@ -31,7 +31,7 @@ contract ContractDeployer {
     }
 
     /**
-     * Mandatory for deployContract()
+     * Required for deployContract()
      */
     function getConversionRate(uint256 ethAmount) public view returns (uint256) {
         uint256 ethPriceInWei = getEthPrice();
