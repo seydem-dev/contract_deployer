@@ -57,7 +57,7 @@ contract ContractDeployer {
     }
 
     /**
-     * @notice Returns a string of all deployed contracts of an EOA
+     * @notice Returns a list of all deployed contracts of an EOA
      */
     function getOwnerContracts(address ownerAddress) external view returns (address[] memory) {
         return trackingContracts[ownerAddress];
