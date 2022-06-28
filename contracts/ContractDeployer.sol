@@ -1,12 +1,8 @@
 // SPDX-License-Identifier: MIT
 
-/// @title A contract that deploys other contracts with additional functionality and restrictions
-/// @author Seyon Demiroglu
-
 pragma solidity ^0.8.0;
 
 import "./Contract.sol";
-import "./AggregatorV3Interface.sol";
 
 contract ContractDeployer {
 
@@ -16,20 +12,24 @@ contract ContractDeployer {
         owner = msg.sender;
     }
 
-    address[] public storeContracts;
-    Addresses[] public contracts;
+    address[] public contracts;
+    Addresses[] public getContractWithOwnerAddress;
 
-    mapping(address => address) public getLatestContractAddress;
-    mapping(address => address) public getEOA;
+    mapping(address => address) public getLatestContractAddressOfOwner;
+    mapping(address => address) public getContractOwner;
     mapping(address => uint8) private _deployedContractsPerWallet;
-    mapping(address => address[]) public trackingContracts;
+    mapping(address => address[]) private _trackingContracts;
 
     struct Addresses {
         address contractOwner;
         address contractAddress;
     }
 
-    function deployContract(uint256 contractsAmount) external payable {
+    /**
+      * @notice Function to deploy user's contracts
+      * @param contractsAmount Amount of desired contracts to be deployed, which can not be 0 and can not exceed 5
+      */
+    function deployContract(uint8 contractsAmount) external payable {
         require(tx.origin == msg.sender, "The function caller is not an Externally Owned Account");
         uint8 maxContractsPerTx = 5;
         uint8 maxContractsPerWallet = 50;
@@ -37,29 +37,36 @@ contract ContractDeployer {
         require(contractsAmount != 0 && contractsAmount <= maxContractsPerTx, "You can not deploy more than 5 contracts per transaction");
         require(msg.value == contractsAmount * deploymentPrice, "You need to pay 0.005 ETH per contract");
         require(_deployedContractsPerWallet[msg.sender] + contractsAmount <= maxContractsPerWallet, "You can not deploy more than 50 contracts per wallet");
-        for(uint256 i = 0; i < contractsAmount; i++) {
+        for(uint8 i; i < contractsAmount; i++) {
             Contract deployedContract = new Contract();
-            contracts.push(Addresses({contractOwner: msg.sender, contractAddress: address(deployedContract)}));
-            storeContracts.push(address(deployedContract));
-            trackingContracts[msg.sender] = storeContracts;
-            getLatestContractAddress[msg.sender] = address(deployedContract);
-            getEOA[address(deployedContract)] = msg.sender;
-
+            getContractWithOwnerAddress.push(Addresses({contractOwner: msg.sender, contractAddress: address(deployedContract)}));
+            contracts.push(address(deployedContract));
+            _trackingContracts[msg.sender] = contracts;
+            getLatestContractAddressOfOwner[msg.sender] = address(deployedContract);
+            getContractOwner[address(deployedContract)] = msg.sender;
         }
     }
 
     /**
-     * @notice Enables owner to withdraw funds from contract
+     * @notice Function that returns a string of all deployed contracts of given address
+     * @param ownerAddress Will return all deployed contracts of the given address in a string
      */
-    function withdraw() external payable {
+    function getStringOfOwnerContracts(address ownerAddress) external view returns (address[] memory) {
+        return _trackingContracts[ownerAddress];
+    }
+
+    /**
+     * @notice Function that enables only the owner to withdraw funds from contract
+     */
+    function withdraw() external {
         require(msg.sender == owner, "You are not the owner of this contract");
         payable(owner).transfer(address(this).balance);
     }
 
     /**
-     * @notice Returns a list of all deployed contracts of an EOA
-     */
-    function getOwnerContracts(address ownerAddress) external view returns (address[] memory) {
-        return trackingContracts[ownerAddress];
+      * @notice Function returns balance of this smart contract in GWEI, 1e9 GWEI = 1 ETH
+      */
+    function balanceOfContractInGwei() external view returns (uint256) {
+        return address(this).balance / 1e9;
     }
 }
