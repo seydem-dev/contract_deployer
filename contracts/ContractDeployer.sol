@@ -37,13 +37,16 @@ contract ContractDeployer {
         require(contractsAmount != 0 && contractsAmount <= maxContractsPerTx, "You can not deploy more than 5 contracts per transaction");
         require(msg.value == contractsAmount * deploymentPrice, "You need to pay 0.005 ETH per contract");
         require(_deployedContractsPerWallet[msg.sender] + contractsAmount <= maxContractsPerWallet, "You can not deploy more than 50 contracts per wallet");
-        for(uint8 i; i < contractsAmount; i++) {
+        for(uint8 i; i < contractsAmount;) {
             Contract deployedContract = new Contract();
             getContractWithOwnerAddress.push(Addresses({contractOwner: msg.sender, contractAddress: address(deployedContract)}));
             contracts.push(address(deployedContract));
             _trackingContracts[msg.sender] = contracts;
             getLatestContractAddressOfOwner[msg.sender] = address(deployedContract);
             getContractOwner[address(deployedContract)] = msg.sender;
+            unchecked {
+                i++;
+            }
         }
     }
 
