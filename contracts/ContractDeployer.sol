@@ -18,6 +18,7 @@ contract ContractDeployer {
     mapping(address => address) public getLatestContractAddressOfOwner;
     mapping(address => address) public getContractOwner;
     mapping(address => uint8) private _deployedContractsPerWallet;
+    mapping(address => address[]) private _trackingContracts;
 
     struct Addresses {
         address contractOwner;
@@ -39,6 +40,7 @@ contract ContractDeployer {
         for(uint8 i; i < contractsAmount;) {
             Contract deployedContract = new Contract();
             getContractWithOwnerAddress.push(Addresses({contractOwner: msg.sender, contractAddress: address(deployedContract)}));
+            _trackingContracts[msg.sender] = contracts;
             contracts.push(address(deployedContract));
             getLatestContractAddressOfOwner[msg.sender] = address(deployedContract);
             getContractOwner[address(deployedContract)] = msg.sender;
