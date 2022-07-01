@@ -31,12 +31,13 @@ contract ContractDeployer {
       */
     function deployContract(uint8 contractsAmount) external payable {
         uint8 maxContractsPerTx = 5;
-        uint8 maxContractsPerWallet = 50;
+        uint8 maxContractsPerWallet = 15;
         uint56 deploymentPrice = 0.005 ether;
         require(tx.origin == msg.sender, "The function caller is not an Externally Owned Account");
         require(contractsAmount != 0 && contractsAmount <= maxContractsPerTx, "You can not deploy more than 5 contracts per transaction");
         require(msg.value == contractsAmount * deploymentPrice, "You need to pay 0.005 ETH per contract");
         require(_deployedContractsPerWallet[msg.sender] + contractsAmount <= maxContractsPerWallet, "You can not deploy more than 50 contracts per wallet");
+        _deployedContractsPerWallet[msg.sender] += contractsAmount;
         for(uint8 i; i < contractsAmount;) {
             Contract deployedContract = new Contract();
             getContractWithOwnerAddress.push(Addresses({contractOwner: msg.sender, contractAddress: address(deployedContract)}));
@@ -48,7 +49,6 @@ contract ContractDeployer {
                 i++;
             }
         }
-        _deployedContractsPerWallet[msg.sender] += contractsAmount;
     }
 
     /**
