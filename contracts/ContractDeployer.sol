@@ -29,10 +29,10 @@ contract ContractDeployer {
         uint8 maxContractsPerTx = 5;
         uint8 maxContractsPerWallet = 50;
         uint56 deploymentPrice = 0.005 ether;
-        require(tx.origin == msg.sender, "The function caller is not an Externally Owned Account");
-        require(contractsAmount != 0 && contractsAmount <= maxContractsPerTx, "You can not deploy more than 5 contracts per transaction");
-        require(msg.value == contractsAmount * deploymentPrice, "You need to pay 0.005 ETH per contract");
-        require(_deployedContractsPerWallet[msg.sender] + contractsAmount <= maxContractsPerWallet, "You can not deploy more than 50 contracts per wallet");
+        require(tx.origin == msg.sender, "Only EOA");
+        require(contractsAmount != 0 && contractsAmount <= maxContractsPerTx, "Max 5 contracts per tx");
+        require(msg.value == contractsAmount * deploymentPrice, "Pay 0.005 ETH per contract");
+        require(_deployedContractsPerWallet[msg.sender] + contractsAmount <= maxContractsPerWallet, "Max 50 contracts per EOA");
         _deployedContractsPerWallet[msg.sender] += contractsAmount;
         for(uint8 i; i < contractsAmount;) {
             Contract deployedContract = new Contract();
@@ -59,7 +59,7 @@ contract ContractDeployer {
      * @notice Function that enables only the owner to withdraw funds from contract
      */
     function withdraw() external {
-        require(msg.sender == owner, "You are not the owner of this contract");
+        require(msg.sender == owner, "Not owner");
         payable(owner).transfer(address(this).balance);
     }
 }
