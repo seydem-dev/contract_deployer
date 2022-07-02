@@ -6,7 +6,7 @@ import "./Contract.sol";
 
 contract ContractDeployer {
 
-    address public constant OWNER = /*0xYOuRAdDresS*/;
+    address public constant OWNER = msg.sender;
     
     address[] public contracts;
     Addresses[] public getContractWithOwnerAddress;
