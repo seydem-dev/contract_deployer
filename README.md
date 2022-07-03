@@ -5,7 +5,7 @@
 ```
 owner
 ```
-*Address, which deployed ```ContractDeployer.sol```*
+*Address, which deployed `ContractDeployer.sol`*
 
 ```
 contracts
