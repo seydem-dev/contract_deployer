@@ -33,6 +33,11 @@ _deployedContractsPerWallet
 *Mapping that is required so that EOA's deployed contracts amount can be tracked and limited to x.*
 
 ```
+_trackingContracts
+```
+*Required for `getStringOfOwnerContracts()`*
+
+```
 Addresses
 ```
 *Struct required to get contract address and contract deployer address in an array at the same index.*
