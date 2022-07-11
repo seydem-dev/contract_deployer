@@ -31,19 +31,17 @@ contract ContractDeployer {
         uint56 deploymentPrice = 0.005 ether;
         require(tx.origin == msg.sender, "Only EOA");
         require(contractsAmount != 0 && contractsAmount <= maxContractsPerTx, "Max 5 contracts per tx");
-        require(msg.value == contractsAmount * deploymentPrice, "Pay 0.005 ETH per contract");
+        require(msg.value >= contractsAmount * deploymentPrice, "At least 0.005 ETH per contract");
         require(_deployedContractsPerWallet[msg.sender] + contractsAmount <= maxContractsPerWallet, "Max 50 contracts per EOA");
         _deployedContractsPerWallet[msg.sender] += contractsAmount;
-        for(uint8 i; i < contractsAmount;) {
+        for (uint8 i; i < contractsAmount;) {
             Contract deployedContract = new Contract();
             getContractWithOwnerAddress.push(Addresses({contractOwner: msg.sender, contractAddress: address(deployedContract)}));
             _trackingContracts[msg.sender] = contracts;
             contracts.push(address(deployedContract));
             getLatestContractAddressOfOwner[msg.sender] = address(deployedContract);
             getContractOwner[address(deployedContract)] = msg.sender;
-            unchecked {
-                i++;
-            }
+            unchecked { i++; }
         }
     }
 
