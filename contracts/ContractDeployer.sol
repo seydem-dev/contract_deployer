@@ -6,7 +6,7 @@ import "./Contract.sol";
 
 contract ContractDeployer {
 
-    address public constant OWNER = msg.sender;
+    address public immutable OWNER;
     
     address[] public contracts;
     Addresses[] public getContractWithOwnerAddress;
@@ -19,6 +19,10 @@ contract ContractDeployer {
     struct Addresses {
         address contractOwner;
         address contractAddress;
+    }
+
+    constructor() {
+        OWNER = msg.sender;
     }
 
     /**
