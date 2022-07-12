@@ -6,7 +6,7 @@ import "./Contract.sol";
 
 contract ContractDeployer {
 
-    address public immutable OWNER;
+    address public immutable owner;
     
     address[] public contracts;
     Addresses[] public getContractWithOwnerAddress;
@@ -22,7 +22,7 @@ contract ContractDeployer {
     }
 
     constructor() {
-        OWNER = msg.sender;
+        owner = msg.sender;
     }
 
     /**
@@ -58,10 +58,10 @@ contract ContractDeployer {
     }
 
     /**
-     * @notice Function that enables only the OWNER to withdraw funds from contract
+     * @notice Function that enables only the owner to withdraw funds from contract
      */
     function withdraw() external {
-        require(msg.sender == OWNER, "Not owner");
-        payable(OWNER).transfer(address(this).balance);
+        require(msg.sender == owner, "Not owner");
+        payable(owner).transfer(address(this).balance);
     }
 }
