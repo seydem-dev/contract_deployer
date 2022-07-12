@@ -22,9 +22,9 @@ contract ContractDeployer {
     }
 
     /**
-      * @notice Function to deploy user's contracts
-      * @param contractsAmount Amount of desired contracts to be deployed, which can not be 0 and can not exceed 5
-      */
+     * @notice Function to deploy user's contracts
+     * @param contractsAmount Amount of desired contracts to be deployed, which can not be 0 and can not exceed 5
+     */
     function deployContract(uint8 contractsAmount) external payable {
         uint8 maxContractsPerTx = 5;
         uint8 maxContractsPerWallet = 50;
