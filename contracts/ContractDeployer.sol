@@ -11,10 +11,10 @@ contract ContractDeployer {
     address[] public contracts;
     Addresses[] public getContractWithOwnerAddress;
 
-    mapping(address => address) public getLatestContractAddressOfOwner;
-    mapping(address => address) public getContractOwner;
-    mapping(address => uint8) private _deployedContractsPerWallet;
-    mapping(address => address[]) private _trackingContracts;
+    mapping (address => address) public getLatestContractAddressOfOwner;
+    mapping (address => address) public getContractOwner;
+    mapping (address => uint8) private _deployedContractsPerWallet;
+    mapping (address => address[]) private _trackingContracts;
 
     struct Addresses {
         address contractOwner;
@@ -45,7 +45,7 @@ contract ContractDeployer {
             contracts.push(address(deployedContract));
             getLatestContractAddressOfOwner[msg.sender] = address(deployedContract);
             getContractOwner[address(deployedContract)] = msg.sender;
-            unchecked { i++; }
+            unchecked {i++;}
         }
     }
 
