@@ -1,11 +1,11 @@
 # Fixed Contract
 
-**ContractDeployer is a contract, which deploys imported contracts under certain conditions and with a few restrictions. In this case, the deployed contract is Contract.sol, a sample contract. But really, any contract can be deployed, regardless of what the contract may represent.**
+**ContractDeployer is a contract which deploys imported contracts under certain conditions and restrictions. In this case, the deployed contract is `Contract.sol`, a sample contract. But really, any contract can be deployed, regardless of what it may represent.**
 
 ```
 owner
 ```
-*Address, which deployed `ContractDeployer.sol`*
+*Address which deployed `ContractDeployer.sol`*
 
 ```
 contracts
