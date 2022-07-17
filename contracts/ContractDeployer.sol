@@ -4,6 +4,11 @@ pragma solidity ^0.8.0;
 
 import "./Contract.sol";
 
+error NotOwner();
+error InsufficientAmount();
+error LimitExceeded();
+error OnlyEOA();
+
 contract ContractDeployer {
 
     address public immutable owner;
@@ -33,10 +38,10 @@ contract ContractDeployer {
         uint256 maxContractsPerTx = 5;
         uint256 maxContractsPerWallet = 50;
         uint256 deploymentPrice = 0.005 ether;
-        require(tx.origin == msg.sender, "Only EOA");
-        require(contractsAmount != 0 && contractsAmount <= maxContractsPerTx, "Max 5 contracts per tx");
-        require(msg.value >= contractsAmount * deploymentPrice, "At least 0.005 ETH per contract");
-        require(_deployedContractsPerWallet[msg.sender] + contractsAmount <= maxContractsPerWallet, "Max 50 contracts per EOA");
+        if (tx.origin != msg.sender) revert OnlyEOA();
+        if (contractsAmount = 0 && contractsAmount > maxContractsPerTx) revert LimitExceeded();
+        if (msg.value < contractsAmount * deploymentPrice) revert InsufficientAmount();
+        if (_deployedContractsPerWallet[msg.sender] + contractsAmount > maxContractsPerWallet) revert LimitExceeded();
         _deployedContractsPerWallet[msg.sender] += contractsAmount;
         for (uint256 i; i < contractsAmount;) {
             Contract deployedContract = new Contract();
@@ -61,7 +66,7 @@ contract ContractDeployer {
      * @notice Function that enables only the owner to withdraw funds from contract
      */
     function withdraw() external {
-        require(msg.sender == owner, "Not owner");
+        if (msg.sender != owner) revert NotOwner();
         payable(owner).transfer(address(this).balance);
     }
 }
