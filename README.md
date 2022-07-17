@@ -1,6 +1,6 @@
-# Fixed Contract
+# Contract Deployer
 
-**ContractDeployer is a contract which deploys imported contracts under certain conditions and restrictions. In this case, the deployed contract is `Contract.sol`, a sample contract. But really, any contract can be deployed, regardless of what it may represent.**
+**Contract Deployer is a contract which deploys imported contracts under certain conditions and restrictions. In this case, the deployed contract is `Contract.sol`, a sample contract. But really, any contract can be deployed, regardless of what it may represent.**
 
 ```
 owner
