@@ -1,6 +1,5 @@
 # Contract Deployer
-
-**Contract Deployer is a contract which deploys imported contracts under certain conditions and restrictions. In this case, the deployed contract is `Contract.sol`, a sample contract. But really, any contract can be deployed, regardless of what it may represent.**
+**Contract Deployer is a contract which deploys imported contracts under certain conditions and restrictions. In this case, the deployed contract is `TestContractDeployer.sol`, a sample contract. But really, any contract can be deployed, regardless of what it may represent.**
 
 ```
 owner
@@ -30,7 +29,7 @@ getContractOwner
 ```
 _deployedContractsPerWallet
 ```
-*Mapping that is required so that EOA's deployed contracts amount can be tracked and limited to x.*
+*Mapping that is required so that address' deployed contracts amount can be tracked and limited.*
 
 ```
 _trackingContracts
@@ -45,21 +44,21 @@ Addresses
 ```
 deployContract()
 ```
-*Function that deploys contract. User must be an EOA, user can not deploy more than 5 contracts per transaction, user can not deploy more than 50 contracts per EOA, user must pay 0.005 ETH / contract.*
+*Function that deploys contract. Caller must be an EOA, user can not deploy more than 5 contracts per transaction, user can not deploy more than 50 contracts per EOA, user must pay 0.005 ETH / contract.*
 
 ```
 getStringOfOwnerContracts()
 ```
-*Get a string with the entirety of deployed contracts of an EOA.*
+*Get a string with the entirety of deployed contracts of an address.*
 
 ```
 withdraw()
 ```
 *Function for the owner to withdraw balance of the smart contract.*
 
-# TestContractDeployer
+# Test Contract Deployer
 
 ```
-f
+sample()
 ```
-*f*
+*Sample function returns a string. No more.*
