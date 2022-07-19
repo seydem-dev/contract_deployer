@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import "./Contract.sol";
+import "./TestContractDeployer.sol";
 
 error NotOwner();
 error InsufficientAmount();
