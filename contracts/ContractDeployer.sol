@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-import "./TestContractDeployer.sol";
+import "./test/TestContractDeployer.sol";
 
 error NotOwner();
 error InsufficientAmount();
@@ -36,15 +36,15 @@ contract ContractDeployer {
      */
     function deployContract(uint256 contractsAmount) external payable {
         uint256 maxContractsPerTx = 5;
-        uint256 maxContractsPerWallet = 50;
+        uint256 maxContractsPerWallet = 15;
         uint256 deploymentPrice = 0.005 ether;
         if (tx.origin != msg.sender) revert OnlyEOA();
-        if (contractsAmount = 0 && contractsAmount > maxContractsPerTx) revert LimitExceeded();
+        if (contractsAmount == 0 || contractsAmount > maxContractsPerTx) revert LimitExceeded();
         if (msg.value < contractsAmount * deploymentPrice) revert InsufficientAmount();
         if (_deployedContractsPerWallet[msg.sender] + contractsAmount > maxContractsPerWallet) revert LimitExceeded();
         _deployedContractsPerWallet[msg.sender] += contractsAmount;
         for (uint256 i; i < contractsAmount;) {
-            Contract deployedContract = new Contract();
+            TestContractDeployer deployedContract = new TestContractDeployer();
             getContractWithOwnerAddress.push(Addresses({contractOwner: msg.sender, contractAddress: address(deployedContract)}));
             _trackingContracts[msg.sender] = contracts;
             contracts.push(address(deployedContract));
